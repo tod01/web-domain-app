@@ -10,11 +10,15 @@ import java.util.function.Consumer;
 @Configuration
 public class DomainKafkaConsumer {
 
+    /**
+     * We consume the messages. As It is a Consumer method, we don't have to send anything back.
+     * @return
+     */
+
     @Bean
     public Consumer<KStream<String, Domain>> domainService() {
-
         return kstream -> kstream.foreach((key, domain) -> {
-            System.out.println(String.format("Domain consumed [%s] Status [%s]", domain.getDomain(), ! domain.isDead()));
+            System.out.printf(String.format("Domain consumed [%s] Inactive [%s]", domain.getDomain(), domain.isDead()) + "\n");
         });
     }
 }

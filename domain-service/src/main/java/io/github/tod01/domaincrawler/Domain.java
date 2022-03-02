@@ -4,6 +4,7 @@ package io.github.tod01.domaincrawler;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Objects;
 
 @Data
 public class Domain {
@@ -16,7 +17,7 @@ public class Domain {
     List<String> A;
     List<String> NS;
     String CNAME;
-    List<Object> MX;
+    List<Objects> MX;
     List<String> TXT;
 
 }

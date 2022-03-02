@@ -10,14 +10,20 @@ import java.util.function.Function;
 @Configuration
 public class DomainKafkaProcessor {
 
+    /**
+     * Filter and get active domains
+     * @return a function (because we consume the message and we publish it again)
+     */
     @Bean
     public Function<KStream<String, Domain>, KStream<String, Domain>> domainProcessor() {
+
         return kstream -> kstream.filter((key, domain) -> {
             if (domain.isDead())
                 System.out.println("Inactive Domain: " + domain.getDomain());
             else
                 System.out.println("Active Domain: " + domain.getDomain());
             return !domain.isDead();
+
         });
     }
 }

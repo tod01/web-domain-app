@@ -16,19 +16,18 @@ public class DomainCrawlerService {
 
     public void crawl(String name) {
 
-        Mono<DomainList> domainListMono = WebClient.create().get().uri("https://domainsdb.info/?query=" + name)
-                                                .accept(MediaType.APPLICATION_JSON)
-                                                .retrieve()
-                                                .bodyToMono(DomainList.class);
+        //get the data and accept it to the Json format and convert it to the Domain format
+        Mono<DomainList> domainListMono =  WebClient.create().get()
+                .uri("https://api.domainsdb.info/v1/domains/search?domain="+name)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve().bodyToMono(DomainList.class);
 
-        // subscribe to the domain list in order to publish them one by one
+        // subscribe to the data
         domainListMono.subscribe(domainList -> {
             domainList.domains.forEach(domain -> {
-                    kafkaTemplate.send(KAFKA_TOPIC, domain);
-                    System.out.println("Domain message: " + domain);
-                }
-            );
-
+                kafkaTemplate.send(KAFKA_TOPIC, domain);
+                System.out.println("Domain message: " + domain.getDomain());
+            });
         });
     }
 }

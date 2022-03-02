@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class DomainCrawlerController {
 
     @Autowired
-    private DomainCrawlerService domainCrawlerService;
+    DomainCrawlerService domainCrawlerService;
 
     @GetMapping("/lookup/{name}")
     public String lookup(@PathVariable("name") final String name) {
         domainCrawlerService.crawl(name);
-        return "Domain crawler has scrapped your data";
+        return "Domaine crawler has scrapped your data";
     }
 }
